@@ -1,0 +1,4 @@
+dependency_overrides:
+  bloc: ^8.1.0
+  bloc_test: ^9.1.0
+  flutter_bloc: ^8.1.1
