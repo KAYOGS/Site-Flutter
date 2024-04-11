@@ -6,9 +6,11 @@ final class ResiduosState extends Equatable {
   const ResiduosState._({required this.status, this.residuos, this.error});
 
   const ResiduosState.initial() : this._(status: ResiduosStatus.initial);
-  const ResiduosState.loading() : this._(status: ResiduosStatus.loading);
-  const ResiduosState.loaded({required List<Residuo>? residuos}) : this._(status: ResiduosStatus.loading, residuos: residuos);
-  const ResiduosState.error({required Object? error}) : this._(status: ResiduosStatus.error, error: error);
+  const ResiduosState.loading() : this._(status: ResiduosStatus.loading);          
+  const ResiduosState.loaded({required List<Residuo>? residuos})
+      : this._(status: ResiduosStatus.loaded, residuos: residuos);
+  const ResiduosState.error({required Object error})
+      : this._(status: ResiduosStatus.error, error: error);
 
   final ResiduosStatus status;
   final List<Residuo>? residuos;

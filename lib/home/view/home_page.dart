@@ -41,7 +41,15 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text('Gestão de residuos'),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<ResiduosPage>(
+                      builder: (_) => BlocProvider.value(
+                            value: ResiduosBloc(user: user),
+                            child: ResiduosPage(),
+                          )),
+                );
+              },
             ),
           ],
         ),
