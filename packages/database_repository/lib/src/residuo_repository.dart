@@ -49,6 +49,7 @@ class ResiduoRepository {
 
   Future<Residuo> add({required String userId, required Residuo residuo}) {
     try {
+      // ignore: unused_local_variable
       var date;
 
       try {
@@ -69,7 +70,7 @@ class ResiduoRepository {
             name: residuo.name,
             size: residuo.size,
             solution: residuo.solution,
-            date: date);
+            date: residuo.date);
       });
     } catch (exception) {
       rethrow;

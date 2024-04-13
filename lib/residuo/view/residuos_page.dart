@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: unused_import
 import 'package:flutter_firebase_login/residuo/residuo.dart';
+// ignore: unused_import
+import 'package:intl/intl.dart';
+// ignore: unused_import
+import 'package:intl/date_symbol_data_local.dart';
 
 class ResiduosPage extends StatefulWidget {
   const ResiduosPage({super.key});
@@ -18,6 +22,7 @@ class _ResiduosPageState extends State<ResiduosPage> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting();
     BlocProvider.of<ResiduosBloc>(context).add(ListAllResiduos());
   }
 
@@ -36,24 +41,67 @@ class _ResiduosPageState extends State<ResiduosPage> {
       ),
       body: BlocListener<ResiduosBloc, ResiduosState>(
         bloc: BlocProvider.of<ResiduosBloc>(context),
-        listener: (context, state) {},
+        listener: (context, state) {
+          final messenger = ScaffoldMessenger.of(context);
+          messenger.hideCurrentSnackBar();
+          switch (state.status) {
+            case ResiduosStatus.error:
+              messenger.showSnackBar(
+                const SnackBar(
+                  width: 500,
+                  behavior: SnackBarBehavior.floating,
+                  content: const Text(
+                    'Erro inesperado! Tente novamente mais tarde',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              );
+            default:
+          }
+        },
         child: BlocBuilder<ResiduosBloc, ResiduosState>(
           bloc: BlocProvider.of<ResiduosBloc>(context),
-          builder: (context, state) {
+          builder: (constext, state) {
             switch (state.status) {
               case ResiduosStatus.loading:
-                return LinearProgressIndicator();
+                return const LinearProgressIndicator();
               case ResiduosStatus.loaded:
                 if (state.residuos!.isEmpty) {
-                  return Center(
-                    child: Text('A lista de residuos está vazia.'),
+                  return const Center(
+                    child: const Text('A lista de residuos está vazia.'),
                   );
                 }
                 return ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(),
+                  separatorBuilder: (constext, index) => const Divider(),
                   itemCount: state.residuos!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile();
+                  itemBuilder: (constext, index) {
+                    String date = '';
+                    try {
+                      date = DateFormat.yMMMMd('pt-BR')
+                          .format(state.residuos![index].date!);
+                    } catch (exception) {}
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Center(
+                          child: Text(state.residuos![index].name[0]),
+                        ),
+                      ),
+                      title: Text(state.residuos![index].name),
+                      subtitle: Text(date),
+                      trailing:
+                          Text((state.residuos![index].size ?? '').toString()),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<ResiduosPage>(
+                            builder: (_) => BlocProvider.value(
+                                  value: ResiduoBloc(
+                                      user:
+                                          BlocProvider.of<ResiduosBloc>(context)
+                                              .user,
+                                      residuo: state.residuos![index]),
+                                  child: ResiduoForm(),
+                                )),
+                      ),
+                    );
                   },
                 );
               default:
@@ -68,7 +116,9 @@ class _ResiduosPageState extends State<ResiduosPage> {
             Navigator.of(context).push(
               MaterialPageRoute<ResiduosPage>(
                   builder: (_) => BlocProvider.value(
-                        value: ResiduoBloc(user: BlocProvider.of<ResiduosBloc>(context).user, residuo: Residuo.empty),
+                        value: ResiduoBloc(
+                            user: BlocProvider.of<ResiduosBloc>(context).user,
+                            residuo: Residuo.empty),
                         child: ResiduoForm(),
                       )),
             );

@@ -14,8 +14,19 @@ class ResiduosBloc extends Bloc<ResiduosEvent, ResiduosState> {
         super(ResiduosState.initial()) {
     on<ListAllResiduos>((event, emit) async {
       emit(ResiduosState.loading());
+      // ignore: unused_local_variable
+      final listAll = _residuoRepository.listAll(userId: user.id);
+      listAll.listen(
+        (residuos) {
+          emit(ResiduosState.changed(residuos: residuos));
+        },
+        onError: (error, stackTrace) {
+          print(error);
+          return ResiduosState.error(error: error);
+        },
+      );
       await emit.forEach(
-        _residuoRepository.listAll(userId: user.id),
+        listAll,
         onData: (List<Residuo> residuos) {
           return ResiduosState.loaded(residuos: residuos);
         },
