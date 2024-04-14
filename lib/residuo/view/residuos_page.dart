@@ -1,4 +1,6 @@
 // ignore: unused_import
+// ignore_for_file: unused_local_variable
+
 import 'package:database_repository/database_repository.dart';
 // ignore: unused_import
 import 'package:flutter/material.dart';
@@ -46,16 +48,14 @@ class _ResiduosPageState extends State<ResiduosPage> {
           messenger.hideCurrentSnackBar();
           switch (state.status) {
             case ResiduosStatus.error:
-              messenger.showSnackBar(
-                const SnackBar(
-                  width: 500,
-                  behavior: SnackBarBehavior.floating,
-                  content: const Text(
-                    'Erro inesperado! Tente novamente mais tarde',
-                    style: TextStyle(color: Colors.red),
-                  ),
+              messenger.showSnackBar(const SnackBar(
+                width: 500,
+                behavior: SnackBarBehavior.floating,
+                content: const Text(
+                  'Erro inesperado! tente novamente mais tarde',
+                  style: TextStyle(color: Colors.red),
                 ),
-              );
+              ));
             default:
           }
         },
@@ -97,7 +97,7 @@ class _ResiduosPageState extends State<ResiduosPage> {
                                       user:
                                           BlocProvider.of<ResiduosBloc>(context)
                                               .user,
-                                      residuo: state.residuos![index]),
+                                      residuo: Residuo.empty),
                                   child: ResiduoForm(),
                                 )),
                       ),
