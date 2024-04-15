@@ -1,4 +1,4 @@
-import '../database_repository.dart';
+import 'package:database_repository/database_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// {@template repository}
@@ -24,7 +24,6 @@ class ResiduoRepository {
           .map((result) {
         final List<Residuo> residuos = <Residuo>[];
         result.docs.forEach((doc) {
-          // ignore: unused_local_variable
           final data = doc.data();
           // ignore: unused_local_variable
           var date;
@@ -37,7 +36,7 @@ class ResiduoRepository {
               name: data['name'],
               size: data['size'],
               solution: data['solution'],
-              date: data['date']));
+              date: date));
         });
 
         return residuos;
@@ -64,6 +63,7 @@ class ResiduoRepository {
         'name': residuo.name,
         'size': residuo.size,
         'solution': residuo.solution,
+        'date': residuo.date,
       }).then((result) {
         return Residuo(
             id: result.id,

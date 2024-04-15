@@ -24,8 +24,8 @@ class _ResiduosPageState extends State<ResiduosPage> {
   @override
   void initState() {
     super.initState();
-    initializeDateFormatting();
     BlocProvider.of<ResiduosBloc>(context).add(ListAllResiduos());
+    initializeDateFormatting();
   }
 
   @override
@@ -44,19 +44,35 @@ class _ResiduosPageState extends State<ResiduosPage> {
       body: BlocListener<ResiduosBloc, ResiduosState>(
         bloc: BlocProvider.of<ResiduosBloc>(context),
         listener: (context, state) {
+          // Obtém o ScaffoldMessenger do contexto atual
           final messenger = ScaffoldMessenger.of(context);
+
+          // Esconde qualquer SnackBar atualmente exibido
           messenger.hideCurrentSnackBar();
+
+          // Verifica o status da operação representada pelo objeto state
           switch (state.status) {
+            // Caso o status seja "error"
             case ResiduosStatus.error:
-              messenger.showSnackBar(const SnackBar(
-                width: 500,
-                behavior: SnackBarBehavior.floating,
-                content: const Text(
-                  'Erro inesperado! tente novamente mais tarde',
-                  style: TextStyle(color: Colors.red),
+              // Exibe um SnackBar com uma mensagem de erro
+              messenger.showSnackBar(
+                const SnackBar(
+                  // Define a largura do SnackBar como 500 pixels
+                  width: 500,
+                  // Define o comportamento do SnackBar como flutuante
+                  behavior: SnackBarBehavior.floating,
+                  // Define o conteúdo do SnackBar como um Texto com a mensagem de erro
+                  content: const Text(
+                    'Erro inesperado! Tente novamente mais tarde',
+                    // Define a cor do texto como vermelho
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
-              ));
+              );
+              break;
+            // Caso o status não seja "error"
             default:
+            // Nenhuma ação é realizada
           }
         },
         child: BlocBuilder<ResiduosBloc, ResiduosState>(
@@ -97,7 +113,7 @@ class _ResiduosPageState extends State<ResiduosPage> {
                                       user:
                                           BlocProvider.of<ResiduosBloc>(context)
                                               .user,
-                                      residuo: Residuo.empty),
+                                      residuo: state.residuos![index]),
                                   child: ResiduoForm(),
                                 )),
                       ),
