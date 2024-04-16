@@ -85,7 +85,7 @@ class _ResiduoFormState extends State<ResiduoForm> {
                   width: 500,
                   behavior: SnackBarBehavior.floating,
                   content: const Text(
-                    'Erro inesperado! tente novamente mais tarde.',
+                    'Erro inesperado!',
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
