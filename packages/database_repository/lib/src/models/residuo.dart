@@ -32,12 +32,12 @@ class Residuo {
 
   /// Empty residuo which represents a new residuo.
   Residuo get clone => Residuo(
-        id: this.id,
-        name: this.name,
-        size: this.size,
-        solution: this.solution,
-        date: this.date,
-      );
+    id: this.id,
+    name: this.name,
+    size: this.size,
+    solution: this.solution,
+    date: this.date,
+  );
 
   /// Convenience getter to determine whether the current residuo is empty.
   bool get isEmpty => this.id.isEmpty;
